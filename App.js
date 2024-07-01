@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import * as Battery from 'expo-battery';
 
 export default function App() {
@@ -75,6 +75,11 @@ export default function App() {
     };
   }, [incrementInterval]);
 
+  const handleReset = async () => {
+    const level = await Battery.getBatteryLevelAsync();
+    setBatteryLevel(level * 100);
+  };
+
   return (
     <View style={styles.container}>
       {isCharging ? (
@@ -86,11 +91,19 @@ export default function App() {
           Not charging. Please connect your charger.
         </Text>
       )}
+      <Button style={styles.but} title="Reset" onPress={handleReset} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  but: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    color: 'green',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
